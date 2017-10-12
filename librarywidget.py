@@ -1124,9 +1124,9 @@ class LibraryWidget(QtWidgets.QWidget):
         menu.addAction(action)
 
         menu.addSeparator()
-        themesMenu = studioqt.ThemesMenu(menu)
-        themesMenu.setCurrentTheme(self.theme())
-        themesMenu.themeTriggered.connect(self.setTheme)
+        theme = self.theme()
+        themesMenu = studioqt.ThemesMenu(menu, theme)
+        themesMenu.triggered.connect(self.reloadStyleSheet)
         menu.addMenu(themesMenu)
 
         menu.addSeparator()
@@ -2131,6 +2131,7 @@ class LibraryWidget(QtWidgets.QWidget):
         :rtype: None
         """
         self._theme = theme
+        self._theme.updated.connect(self.reloadStyleSheet)
         self.reloadStyleSheet()
 
     def theme(self):
